@@ -1,0 +1,4 @@
+dashboard google drive : https://console.cloud.google.com/apis/dashboard?cloudshell=true&hl=fr&organizationId=0&project=avid-stratum-416319
+docs google drive : https://cloud.google.com/source-repositories/docs/browsing-files?hl=fr&_gl=1*1jqit1h*_ga*MTI4NTMzMDU4Ny4xNzA3NTgxMzM0*_ga_WH2QY8WWF5*MTcxMDQyMDc5Ny41LjEuMTcxMDQyMzI2Ni4wLjAuMA..&_ga=2.109806085.-1285330587.1707581334
+
+docs kivy : https://kivy.org/doc/stable/
