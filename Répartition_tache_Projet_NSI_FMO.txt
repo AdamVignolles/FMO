@@ -1,0 +1,5 @@
+Répartition des taches projet FMO:
+
+Adam : Playliste , Recherche , Graphique bibliotèque , play music(lecture) , ajout de music
+
+Lenny : Utilisateur , profil , Base de donné , Sécurité , Acceuil 

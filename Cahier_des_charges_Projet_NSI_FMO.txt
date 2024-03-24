@@ -1,0 +1,27 @@
+Cahier des Charge Projet NSI FMO :
+
+V1:
+
+-Interface utilisateur (enregistrement, identification)
+
+-Recherche musique(genre, artiste, nom)
+
+-interface playliste
+
+-lecture de musique/playliste
+
+-Base de donné (users, music, playliste, genre)
+
+V2:
+
+-Acceuil (tendance, music de meme genre)
+
+-possibilité au artiste d'ajouter des music
+
+-Edit des playlistes 
+
+-Image pour les playliste/music/users
+
+-Mise en ligne
+
+-Sécurité
