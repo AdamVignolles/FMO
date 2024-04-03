@@ -1,2 +1,2 @@
 # FMO
-Free Music Online
+Free Music Only
