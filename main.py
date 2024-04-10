@@ -4,10 +4,14 @@ from kivy.core.window import Window
 
 from kivy_pages.connection import Connection, Inscription
 from kivy_pages.home import Home
+from kivy_pages.library import Library
+from kivy_pages.search import Search
+
+from User import User
 
 title = 'Free Muisc Only'
 
-page_size = (500, 700)
+page_size = (500, 650)
 orange = (1, 0.5, 0.3, 1)
 grey = (0.2, 0.2, 0.2, 1)
 
@@ -15,20 +19,31 @@ class MainApp(App):
 
     def build(self):
         self.title = title
-        self.icon = 'img/logo_FMO.png'
+        self.icon = 'img/final_logo.png'
         Window.size = page_size
         Window.clearcolor = grey
 
-        sm = ScreenManager()
+        user = User()
 
-        conn = Connection(name='Connection', sm=sm)
-        insc = Inscription(name='Inscription', sm=sm)
+        sm = ScreenManager()
+        conn = Connection(name='Connection', sm=sm, user=user)
+        insc = Inscription(name='Inscription', sm=sm, user=user)
 
         
         sm.add_widget(conn)
         sm.add_widget(insc)
 
-        sm.add_widget(Home(name='Home'))
+        sm.add_widget(Home(name='Home', sm=sm, user=user))
+        sm.add_widget(Library(name='Library', sm=sm, user=user))
+        sm.add_widget(Search(name='Search', sm=sm, user=user))
+
+
+        if user.is_connected:
+            sm.current = 'Home'
+        else:
+            sm.current = 'Connection'
+
+        
 
         return sm
     

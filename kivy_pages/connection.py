@@ -8,12 +8,13 @@ from kivy.core.window import Window
 
 
 class Connection(Screen):
-    def __init__(self, sm,**kwargs):
+    def __init__(self, sm, user, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
         self.color = (1, 0.5, 0.3, 1)
         self.connection_done = False
         self.sm = sm
+        self.user = user
         
         self.page = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.7})
         # Labels
@@ -43,12 +44,13 @@ class Connection(Screen):
 
 
 class Inscription(Screen):
-    def __init__(self, sm,**kwargs):
+    def __init__(self, sm, user, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
         self.color = (1, 0.5, 0.3, 1)
         self.connection_done = False
         self.sm = sm
+        self.user = user
 
         self.page = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6})
         # Labels
