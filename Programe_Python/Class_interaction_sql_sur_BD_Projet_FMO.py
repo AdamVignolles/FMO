@@ -37,7 +37,7 @@ class Interaction_sql():
         """Permet la modification de la "table" avec la "modif_commande" qui est la modification apporté pour ceux qui
         respecte "element_compare" "comparatif" = "=" "carracteristique" ( Where ), renvoie rien"""
         with self.conex.cursor() as cursor:
-            cursor.execute(str("UPDATE "+table+" SET "+modif_comande+" WHERE "+element_compare+" "+comparatif+" "+carracteristique))
+            cursor.execute(str("UPDATE "+table+" SET "+modif_commande+" WHERE "+element_compare+" "+comparatif+" "+caracteristique))
             
         
     
