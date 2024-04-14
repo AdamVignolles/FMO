@@ -1,5 +1,5 @@
 from kivy.app import App
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.core.window import Window
 
 from kivy_pages.connection import Connection, Inscription
@@ -8,6 +8,7 @@ from kivy_pages.library import Library
 from kivy_pages.search import Search
 
 from User import User
+from Music import Music
 
 title = 'Free Muisc Only'
 
@@ -23,9 +24,11 @@ class MainApp(App):
         Window.size = page_size
         Window.clearcolor = grey
 
-        user = User()
+        music_player = Music()
 
-        sm = ScreenManager()
+        user = User(music_player=music_player)
+
+        sm = ScreenManager(transition=NoTransition())
         conn = Connection(name='Connection', sm=sm, user=user)
         insc = Inscription(name='Inscription', sm=sm, user=user)
 
@@ -33,9 +36,9 @@ class MainApp(App):
         sm.add_widget(conn)
         sm.add_widget(insc)
 
-        sm.add_widget(Home(name='Home', sm=sm, user=user))
-        sm.add_widget(Library(name='Library', sm=sm, user=user))
-        sm.add_widget(Search(name='Search', sm=sm, user=user))
+        sm.add_widget(Home(name='Home', sm=sm, user=user, music_player=music_player))
+        sm.add_widget(Library(name='Library', sm=sm, user=user, music_player=music_player))
+        sm.add_widget(Search(name='Search', sm=sm, user=user, music_player=music_player))
 
 
         if user.is_connected:

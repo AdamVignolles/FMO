@@ -6,13 +6,14 @@ from kivy.uix.floatlayout import FloatLayout
 
 
 class Search(Screen):
-    def __init__(self, sm, user, **kwargs):
+    def __init__(self, sm, user, music_player, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
         self.color = (1, 0.5, 0.3, 1)
 
         self.sm = sm
         self.user = user
+        self.music_player = music_player
         
         self.page = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.7})
 
@@ -25,14 +26,15 @@ class Search(Screen):
     def nav_bar(self):
         float_layout = FloatLayout(size=(300, 300), pos_hint={'center_x': .5, 'center_y': .03})
 
-        home_button = Button(text='Home', size_hint=(.32, .07), pos_hint={'center_x': .2, 'center_y': .5})
+        home_button = Button(text='', background_normal="img/home_nav.png", size_hint=(.3, .07), pos_hint={'center_x': .2, 'center_y': .5})
         home_button.bind(on_press=lambda i: self.go_home(self.sm))
 
-        library_button = Button(text='Library', size_hint=(.32, .07), pos_hint={'center_x': .5, 'center_y': .5})
+        library_button = Button(text='', background_normal="img/playlist_nav.png", size_hint=(.3, .07), pos_hint={'center_x': .5, 'center_y': .5})
         library_button.bind(on_press=lambda i: self.go_library(self.sm))
 
-        search_button = Button(text='Search', size_hint=(.32, .07), pos_hint={'center_x': .8, 'center_y': .5})
+        search_button = Button(text='', background_normal="img/search_nav.png", size_hint=(.3, .07), pos_hint={'center_x': .8, 'center_y': .5})
         search_button.bind(on_press=lambda i: self.go_search(self.sm))
+
 
 
         float_layout.add_widget(home_button)
