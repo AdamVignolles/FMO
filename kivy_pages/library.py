@@ -101,19 +101,12 @@ class Library(Screen):
         file_chooser = FileChooserListView(size_hint=(1, .8), on_submit=self.choose_img, filters=['*.png', '*.jpg'])
         layout.add_widget(file_chooser)
 
-        #layout.add_widget(Button(text='Choose', size_hint=(1, .1), on_press=lambda i: self.choose_img(file_chooser.path, layout)))
-
         self.add_widget(layout)
 
     def choose_img(self, instance, files, *args): 
         self.choose_img_path = files[0]
 
-        # go back to playlist page
         self.remove_widget(instance.parent)
-
-
-        
-
 
 
     def afficher_playlist(self, i, instance):
@@ -121,7 +114,6 @@ class Library(Screen):
 
         playlist = self.user.playlists[i]
         
-        # the background of the layout is grey, so add a rectangle with the same size and position to cover the background with canvas
         with layout.canvas.before:
             Color(0.2, 0.2, 0.2, 1)
             Rectangle(size=layout.size, pos=(layout.x, layout.y + 50))
@@ -134,14 +126,14 @@ class Library(Screen):
         musics_grid = GridLayout(cols=1, spacing=10, padding=10, size_hint=(1, None))
         musics_grid.bind(minimum_height=musics_grid.setter('height'))
 
-        for music in playlist['musics']:
+        for i in range(len(playlist['musics'])):
             box = BoxLayout(orientation='horizontal', spacing=10, padding=10, size_hint=(1, None), size=(500, 100))
             #img
-            box.add_widget(Button(text='', background_normal=music['img'], size_hint=(.2, 1)))
+            box.add_widget(Button(text='', background_normal=playlist['musics'][i]['img'], size_hint=(.2, 1)))
             #title
-            box.add_widget(Label(text=music['title'], size_hint=(.6, 1)))
+            box.add_widget(Label(text=playlist['musics'][i]['title'], size_hint=(.6, 1)))
             #play button
-            box.add_widget(Button(text='>', size_hint=(.2, 1), on_press=lambda i: self.music_player.add_to_queue_and_play(music)))
+            box.add_widget(Button(text='>', size_hint=(.2, 1), on_press=partial(self.music_player.play_playlist, [playlist['musics'], i])))
 
             musics_grid.add_widget(box)
 
@@ -157,7 +149,6 @@ class Library(Screen):
     def music_bar(self):
         float_layout = FloatLayout(size=(500, 50), pos_hint={'center_x': .5, 'center_y': .1})
 
-        # create a box with a background image under the music bar
         with float_layout.canvas.before:
             Rectangle(source='img/music_bar.png', size=float_layout.size, pos=(float_layout.x, float_layout.y + 50))
 
