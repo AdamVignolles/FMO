@@ -50,6 +50,8 @@ class Library(Screen):
     def new_playlist(self, instance):
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6}, size=(500, 600))
 
+        self.choose_img_path = None
+
         with layout.canvas.before:
             Color(0.2, 0.2, 0.2, 1)
             Rectangle(size=layout.size, pos=(layout.x, layout.y + 50))
@@ -74,10 +76,16 @@ class Library(Screen):
 
         self.user.playlists.append({
             "title": title,
-            "img": layout.children[2].path,
+            "img": self.choose_img_path if self.choose_img_path is not None else "img/playlist.png",
             "id": len(self.user.playlists) + 1,
             "musics": []
         })
+
+        self.remove_widget(layout)
+
+        self.playlists_area.remove_widget(self.playlists_grid)
+
+        self.playlits()
 
     def page_choose_img(self, instance):
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6}, size=(500, 600))
@@ -90,18 +98,23 @@ class Library(Screen):
 
         layout.add_widget(Button(text='Back', size_hint=(None, None), size=(50, 50), pos_hint={'center_x': 0.1, 'center_y': 0.1}, on_press=self.back))
 
-        file_chooser = FileChooserListView(size_hint=(1, .8))
+        file_chooser = FileChooserListView(size_hint=(1, .8), on_submit=self.choose_img, filters=['*.png', '*.jpg'])
         layout.add_widget(file_chooser)
 
-        layout.add_widget(Button(text='Choose', size_hint=(1, .1), on_press=lambda i: self.choose_img(file_chooser.path, layout)))
+        #layout.add_widget(Button(text='Choose', size_hint=(1, .1), on_press=lambda i: self.choose_img(file_chooser.path, layout)))
 
         self.add_widget(layout)
 
-    def choose_img(self, path, layout):
-        # change the button to choose image to the path of the image
-        layout.children[2].text = path
+    def choose_img(self, instance, files, *args): 
+        self.choose_img_path = files[0]
 
-        self.remove_widget(layout.children[3])
+        # go back to playlist page
+        self.remove_widget(instance.parent)
+
+
+        
+
+
 
     def afficher_playlist(self, i, instance):
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6}, size=(500, 600))
