@@ -30,18 +30,19 @@ class Home(Screen):
     def music_bar(self):
         float_layout = FloatLayout(size=(500, 50), pos_hint={'center_x': .5, 'center_y': .1})
 
-        # create a box with a background image under the music bar
-        with float_layout.canvas.before:
-            Rectangle(source='img/music_bar.png', size=float_layout.size, pos=(float_layout.x, float_layout.y + 50))
+        # create a button with the bar image
+        bar_button = Button(text='', background_normal="img/music_bar.png", size_hint=(.98, .08), pos_hint={'center_x': .5, 'center_y': .51})
+        
 
-        play_button = Button(text='', background_normal="img/play.png", size_hint=(.02, .02), pos_hint={'center_x': .1, 'center_y': .5})
+        play_button = Button(text='', background_normal="img/vide_area.png", size_hint=(.05, .05), pos_hint={'center_x': .14, 'center_y': .51})
         play_button.bind(on_press=lambda i: self.music_player.pause_resume())
 
         float_layout.add_widget(Label(text=f'{self.music_player.current_music["title"]} - {self.music_player.current_music["artist"]}', size_hint=(.5, .1), pos_hint={'center_x': .5, 'center_y': .5}))
 
-        next_button = Button(text='', background_normal="img/forward.png", size_hint=(.02, .02), pos_hint={'center_x': .9, 'center_y': .5})
+        next_button = Button(text='', background_normal="img/vide_area.png", size_hint=(.05, .05), pos_hint={'center_x': .84, 'center_y': .51})
         next_button.bind(on_press=lambda i: self.music_player.next())
 
+        float_layout.add_widget(bar_button)
         float_layout.add_widget(play_button)
         float_layout.add_widget(next_button)
 

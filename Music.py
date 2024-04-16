@@ -66,6 +66,10 @@ class Music:
         if not self.playing:
             self.play()
 
+    def play_music(self, music, *args2):
+        self.queue = [music]
+        self.play()
+
     def play_playlist(self, args, *args2):
         self.queue = args[0][args[1]:]
         self.play()
