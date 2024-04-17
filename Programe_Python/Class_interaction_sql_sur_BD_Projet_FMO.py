@@ -23,21 +23,28 @@ class Interaction_sql():
         "comparatif" est = < > ,etc"""
         
         with self.conex.cursor() as cursor:
-            cursor.execute(str("SELECT "+element_recherche+" FROM "+table+" WHERE "+element_compare+" "+comparatif+" "+caracteristique))
+            cursor.execute(str("SELECT "+element_recherche+" FROM "+table+" WHERE "+element_compare+" "+comparatif+" "+caracteristique+" ;"))
             resultats = cursor.fetchall()
             return resultats
         
     def inssertionBD(self, table : str, new_insert : list):
         """Realise une inssertion dans la table "table" de la BD avec la liste des argument de la nouvelle inssertion dans l'ordre, renvoie rien"""
         with self.conex.cursor() as cursor:
-            cursor.execute(str("INSSERT INTO "+table+" VALUES "+new_insert))
+            cursor.execute(str("INSSERT INTO "+table+" VALUES "+str(new_insert)+" ;"))
             
         
     def modifBD(self, table : str, modif_commande : str, element_compare : str, caracteristique : str, comparatif = "="):
         """Permet la modification de la "table" avec la "modif_commande" qui est la modification apporté pour ceux qui
         respecte "element_compare" "comparatif" = "=" "carracteristique" ( Where ), renvoie rien"""
         with self.conex.cursor() as cursor:
-            cursor.execute(str("UPDATE "+table+" SET "+modif_commande+" WHERE "+element_compare+" "+comparatif+" "+caracteristique))
+            cursor.execute(str("UPDATE "+table+" SET "+modif_commande+" WHERE "+element_compare+" "+comparatif+" "+caracteristique+" ;"))
+
+    def interBD(self, commande : str):
+        """Permet de fair un requète directe via "comande" sur la BD mettre dans commande la requete ex : "SELECT ..... FROM ....."""
+        with self.conex.cursor() as cursor:
+            cursor.execute(commande)
+            resultats = cursor.fetchall()
+            return resultats
             
         
     
