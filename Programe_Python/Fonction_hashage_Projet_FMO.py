@@ -6,4 +6,5 @@ def hachage_str (chain_charactere:str) :
     hach = chain_charactere.encode()
     hach = hashlib.md5(hach).hexdigest()
     return hach
+
 assert(hachage_str ("569test987") == "3828e46a93f546328caebc43a105a496")

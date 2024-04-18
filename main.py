@@ -8,6 +8,7 @@ from kivy_pages.library import Library
 from kivy_pages.search import Search
 
 from User import User
+
 from Music import Music
 
 title = 'Free Muisc Only'

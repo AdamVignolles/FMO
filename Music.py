@@ -7,7 +7,7 @@ class Music:
         self.queue = []
         self.playing = False
         self.paused = False
-        self.volume = 1
+        self.volume = 50
         self.loop = False
         self.media_player = vlc.MediaPlayer()
 
@@ -18,6 +18,7 @@ class Music:
         self.media_player.set_media(media)
 
         self.media_player.play()
+        self.media_player.audio_set_volume(self.volume)
         self.current_music = music
         self.playing = True
         self.paused = False
@@ -35,7 +36,7 @@ class Music:
             self.playing = True
             self.paused = False
 
-    def pause_resume(self):
+    def pause_resume(self, *args):
         if self.playing and not self.paused:
             self.pause()
         elif not self.playing and self.paused:
@@ -50,7 +51,7 @@ class Music:
         self.paused = False
         self.current_music = None
 
-    def next(self):
+    def next(self, *args):
         if self.queue:
             self.queue.pop(0)
             if self.queue:
@@ -93,4 +94,24 @@ class Music:
     
     def is_paused(self):
         return self.paused
+    
+    def music_time(self):
+        return self.get_time() / 1000
+    
+    def music_length(self):
+        return self.get_length() / 1000
+    
+    def set_time(self, instance, value):
+        self.media_player.set_time(int(value * self.get_length() / 100))
+    
+    def set_volume(self, instance, value):
+        self.media_player.audio_set_volume(int(value))
+
+    def minus_volume(self, instance):
+        self.media_player.audio_set_volume(self.media_player.audio_get_volume() - 10)
+        self.volume = self.media_player.audio_get_volume()
+
+    def plus_volume(self, instance):
+        self.media_player.audio_set_volume(self.media_player.audio_get_volume() + 10)
+        self.volume = self.media_player.audio_get_volume()
     

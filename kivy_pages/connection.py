@@ -6,6 +6,8 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 
+from Programe_Python.Fonction_connexion_inscription_Projet_FMO import *
+
 
 class Connection(Screen):
     def __init__(self, sm, user, **kwargs):

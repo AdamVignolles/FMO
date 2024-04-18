@@ -56,11 +56,8 @@ class User:
         }
         ]
         self.current_queue = []
-        self.current_queue.append(self.playlists[0]['musics'][0])
         self.music_player = music_player
-        if self.music_player is not None and self.current_queue:
-            self.music_player.queue = self.current_queue
-            self.music_player.current_music = self.current_queue[0]
+        
 
     def load_json(self):
         try :
