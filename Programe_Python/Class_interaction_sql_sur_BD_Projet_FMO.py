@@ -2,7 +2,7 @@
 import pymysql as BD
 
 class Interaction_sql():
-    def __init__(self, conex):
+    def __init__(self):
         self.conex = BD.connect(host='localhost',
                         user='root',
                         password='root',
