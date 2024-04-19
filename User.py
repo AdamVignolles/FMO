@@ -26,7 +26,7 @@ class User:
                 },
                 {
                     "title": "Music 3",
-
+                    "artist": "Artist 3",
                     "img": "img/logo.png",
                     "id": 3,
                     "url": "download_music/music.mp3"

@@ -189,11 +189,18 @@ class Search(Screen):
         layout.add_widget(Button(text='- ', size_hint=(None, None), size=(50, 50), pos_hint={'center_x': 0.9, 'center_y': 0.1}, on_press=self.music_player.minus_volume))
 
         layout.add_widget(Button(text='Play', size_hint=(None, None), size=(50, 50), pos_hint={'center_x': 0.1, 'center_y': 0.3}, on_press=self.music_player.pause_resume))
-        layout.add_widget(Button(text='Next', size_hint=(None, None), size=(50, 50), pos_hint={'center_x': 0.2, 'center_y': 0.3}, on_press=self.music_player.next))
+        layout.add_widget(Button(text='Next', size_hint=(None, None), size=(50, 50), pos_hint={'center_x': 0.2, 'center_y': 0.3}, on_press=self.next_music))
 
         layout.add_widget(self.progress)
         layout.add_widget(self.volume)
         self.add_widget(layout)
+
+    def next_music(self, instance):
+        self.music_player.next()
+
+        self.clear_widgets()
+
+        self.show_music(instance)
 
     def show_volume(self, instance):
         self.popup_volume.open()

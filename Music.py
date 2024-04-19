@@ -53,11 +53,8 @@ class Music:
 
     def next(self, *args):
         if self.queue:
-            self.queue.pop(0)
-            if self.queue:
-                self.play()
-        else:
             self.stop()
+            self.play()
 
     def add_to_queue(self, music):
         self.queue.append(music)

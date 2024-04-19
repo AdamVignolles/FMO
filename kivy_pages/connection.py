@@ -6,8 +6,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 
-from Programe_Python.Fonction_connexion_inscription_Projet_FMO import *
-
+from Programe_Python.Class_Connexion_Inscription_Projet_FMO import Connection_Inscription
 
 class Connection(Screen):
     def __init__(self, sm, user, **kwargs):
@@ -17,6 +16,8 @@ class Connection(Screen):
         self.connection_done = False
         self.sm = sm
         self.user = user
+
+        self.connection_inscription = Connection_Inscription()
         
         self.page = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.7})
         # Labels
@@ -39,6 +40,9 @@ class Connection(Screen):
         self.connection_done = True
         self.sm.current = 'Home'
 
+        result = self.connection_inscription.connexion(self.usename.text, self.password.text)
+        print(result)
+
     def go_to_page2(self, instance):
         app = App.get_running_app()
         app.root.current = 'Inscription'
@@ -54,10 +58,13 @@ class Inscription(Screen):
         self.sm = sm
         self.user = user
 
+        self.connection_inscription = Connection_Inscription()
+
         self.page = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6})
         # Labels
         self.page.add_widget(Label(text='Sign up', color=self.color, size=(500, 100), size_hint=(None, None), halign='center'))
-        self.page.add_widget(Label(text='', color=(1, 0, 0, 1), size=(500, 50), size_hint=(None, None), halign='center'))
+        self.error_label = Label(text='', color=(1, 0, 0, 1), size=(500, 50), size_hint=(None, None), halign='center')
+        self.page.add_widget(self.error_label)
         # TextInputs
         self.usename = TextInput(multiline=False, hint_text='Username', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
         self.email = TextInput(multiline=False, hint_text='Email', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
@@ -80,6 +87,11 @@ class Inscription(Screen):
         print(self.confirm_password.text)
         self.connection_done = True
         self.sm.current = 'Home'
+
+        if self.password.text != self.confirm_password.text:
+            self.error_label.text = 'Passwords do not match'
+
+        result = self.connection_inscription.inscription(self.usename.text, self.password.text, self.email.text)
 
     def go_to_page1(self, instance):
         app = App.get_running_app()
