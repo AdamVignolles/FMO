@@ -24,11 +24,13 @@ class Library(Screen):
         self.music_player = music_player
         
         self.playlits()
+        self.n_playlist_afficher = 0
 
         self.nav_bar()
         
         self.music_bar()
         self.update_music_bar()
+        self.update_playlist()
 
     def playlits(self):
 
@@ -43,11 +45,33 @@ class Library(Screen):
 
         for i in  range(len(self.user.playlists)):
             self.playlists_grid.add_widget(Button(text=self.user.playlists[i]["title"], background_normal=self.user.playlists[i]["img"], size_hint=(None, None), size=(150, 150), on_press=partial(self.afficher_playlist, i)))
-
+        
+        self.n_playlist_afficher = len(self.user.playlists)
 
         self.playlists_area.add_widget(self.playlists_grid)
 
         self.add_widget(self.playlists_area)
+
+    def update_playlist(self):
+        Clock.schedule_interval(self.update_playlist_area, 1 / 60)
+
+    def update_playlist_area(self, dt):
+        if self.n_playlist_afficher != len(self.user.playlists):
+            self.playlists_area.clear_widgets()
+
+            self.playlists_grid = GridLayout(cols=2, spacing=20, padding=10, size_hint=(1, None), size=(500, 450))
+            self.playlists_grid.bind(minimum_height=self.playlists_grid.setter('height'))
+
+            self.playlists_grid.add_widget(Button(text='+', size_hint=(None, None), size=(150, 150), on_press=self.new_playlist))
+
+            for i in  range(len(self.user.playlists)):
+                self.playlists_grid.add_widget(Button(text=self.user.playlists[i]["title"], background_normal=self.user.playlists[i]["img"], size_hint=(None, None), size=(150, 150), on_press=partial(self.afficher_playlist, i)))
+            
+            self.n_playlist_afficher = len(self.user.playlists)
+
+            self.playlists_area.add_widget(self.playlists_grid)
+
+
 
     def new_playlist(self, instance):
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6}, size=(500, 600))

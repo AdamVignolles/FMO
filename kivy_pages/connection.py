@@ -22,7 +22,8 @@ class Connection(Screen):
         self.page = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.7})
         # Labels
         self.page.add_widget(Label(text='Login', color=self.color, size=(500, 100), size_hint=(None, None), halign='center'))
-        self.page.add_widget(Label(text='', color=(1, 0, 0, 1), size=(500, 50), size_hint=(None, None), halign='center'))
+        self.error_label = Label(text='', color=(1, 0, 0, 1), size=(500, 50), size_hint=(None, None), halign='center')
+        self.page.add_widget(self.error_label)
         # TextInputs
         self.usename = TextInput(multiline=False, hint_text='Username', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
         self.password = TextInput(password=True, multiline=False, hint_text='Password', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
@@ -35,13 +36,13 @@ class Connection(Screen):
         self.add_widget(self.page)
 
     def check_connection(self, instance):
-        print(self.usename.text)
-        print(self.password.text)
-        self.connection_done = True
-        self.sm.current = 'Home'
-
         result = self.connection_inscription.connexion(self.usename.text, self.password.text)
-        print(result)
+        if type(result) == int:
+            self.connection_done = True
+            self.sm.current = 'Home'
+            self.user.get_info_user(result)
+        else:
+            self.error_label.text = result
 
     def go_to_page2(self, instance):
         app = App.get_running_app()
@@ -67,11 +68,13 @@ class Inscription(Screen):
         self.page.add_widget(self.error_label)
         # TextInputs
         self.usename = TextInput(multiline=False, hint_text='Username', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
-        self.email = TextInput(multiline=False, hint_text='Email', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
+        self.nom = TextInput(multiline=False, hint_text='Nom', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
+        self.prenom = TextInput(multiline=False, hint_text='Prenom', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
         self.password = TextInput(password=True, multiline=False, hint_text='Password', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
         self.confirm_password = TextInput(password=True, multiline=False, hint_text='Confirm Password', pos_hint={'center_x': 0.5}, size_hint=(None, None), size=(300, 50))
         self.page.add_widget(self.usename)
-        self.page.add_widget(self.email)
+        self.page.add_widget(self.nom)
+        self.page.add_widget(self.prenom)
         self.page.add_widget(self.password)
         self.page.add_widget(self.confirm_password)
         # Buttons
@@ -81,17 +84,16 @@ class Inscription(Screen):
         self.add_widget(self.page)
 
     def create_account(self, instance):
-        print(self.usename.text)
-        print(self.email.text)
-        print(self.password.text)
-        print(self.confirm_password.text)
-        self.connection_done = True
-        self.sm.current = 'Home'
-
         if self.password.text != self.confirm_password.text:
             self.error_label.text = 'Passwords do not match'
 
-        result = self.connection_inscription.inscription(self.usename.text, self.password.text, self.email.text)
+        result = self.connection_inscription.inscription(self.usename.text, self.password.text, self.nom.text, self.prenom.text)
+        if type(result) == int:
+            self.connection_done = True
+            self.sm.current = 'Home'
+            self.user.get_info_user(result)
+        else:
+            self.error_label.text = result
 
     def go_to_page1(self, instance):
         app = App.get_running_app()

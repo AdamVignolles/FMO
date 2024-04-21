@@ -12,6 +12,9 @@ from kivy.graphics import Rectangle, Color
 
 from functools import partial
 
+from Programe_Python.Class_interaction_sql_sur_BD_Projet_FMO import Interaction_sql
+
+import datetime
 
 class Search(Screen):
     def __init__(self, sm, user, music_player, **kwargs):
@@ -22,6 +25,7 @@ class Search(Screen):
         self.sm = sm
         self.user = user
         self.music_player = music_player
+        self.user_sql = Interaction_sql()
 
         self.content_search = []
         
@@ -104,6 +108,7 @@ class Search(Screen):
             if p['id'] == playlist['id']:
                 p['musics'].append(music)
                 # update data base
+                self.user_sql.inssertionBD("playlist", [playlist['id'], music['id'], datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")], column=["id_playlists", "id_music", "date_ajout"])
                 break
 
     def back(self, instance):

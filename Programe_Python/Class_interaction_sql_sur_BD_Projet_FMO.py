@@ -7,7 +7,7 @@ class Interaction_sql():
                         user='root',
                         password='root',
                         charset='utf8mb4',
-                        database="FMO",
+                        database="fmo",
                         autocommit=True,
                         cursorclass=BD.cursors.DictCursor)
     
@@ -23,14 +23,27 @@ class Interaction_sql():
         "comparatif" est = < > ,etc"""
         
         with self.conex.cursor() as cursor:
-            cursor.execute(str("SELECT "+element_recherche+" FROM "+table+" WHERE "+element_compare+" "+comparatif+" "+caracteristique+" ;"))
+            
+            request = "SELECT "+element_recherche+" FROM `"+table+"` WHERE `"+element_compare+"`"+comparatif+"%s"
+            cursor.execute(request, caracteristique)
             resultats = cursor.fetchall()
             return resultats
         
-    def inssertionBD(self, table : str, new_insert : list):
+    def inssertionBD(self, table : str, new_insert : list, column=None):
         """Realise une inssertion dans la table "table" de la BD avec la liste des argument de la nouvelle inssertion dans l'ordre, renvoie rien"""
         with self.conex.cursor() as cursor:
-            cursor.execute(str("INSSERT INTO "+table+" VALUES "+str(new_insert)+" ;"))
+            values = "("
+            for i in range(len(new_insert)):
+                values += "%s, "
+            values = values[:-2] + ")"
+            if column == None:
+                col= ""
+            else:
+                col = "("
+                for i in range(len(column)):
+                    col += f'{column[i]}, '
+                col= col[:-2] + ")"
+            cursor.execute(str("INSERT INTO `"+table+"` "+str(col)+" VALUES "+values+";"), new_insert)
             
         
     def modifBD(self, table : str, modif_commande : str, element_compare : str, caracteristique : str, comparatif = "="):
