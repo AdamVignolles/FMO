@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS music (id_music INT UNSIGNED PRIMARY KEY AUTO_INCREME
 				                  auteur VARCHAR(50),
 					              picture VARCHAR(150),
 					              temp INT UNSIGNED ,
-				                  played VARCHAR(50));
+				                  played VARCHAR(50),
+								  link VARCHAR(50));
 
 CREATE TABLE IF NOT EXISTS playlists (id_playlists INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                                   title VARCHAR(80),
