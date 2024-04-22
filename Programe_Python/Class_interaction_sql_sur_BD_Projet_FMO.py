@@ -3,13 +3,14 @@ import pymysql as BD
 
 class Interaction_sql():
     def __init__(self):
-        self.conex = BD.connect(host='localhost',
-                        user='root',
-                        password='root',
+        self.conex = BD.connect(host='nsijoliotcurie.fr',
+                        user='admin_user_FMO',
+                        password='Ldjb39&Xn46B',
                         charset='utf8mb4',
-                        database="fmo",
+                        database="admin_FMO",
                         autocommit=True,
                         cursorclass=BD.cursors.DictCursor)
+        self.PORT = 3306
     
         
     def closeBD(self) -> None:
