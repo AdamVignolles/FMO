@@ -13,6 +13,7 @@ from kivy.graphics import Rectangle, Color
 from functools import partial
 
 from Programe_Python.Class_interaction_sql_sur_BD_Projet_FMO import Interaction_sql
+from Programe_Python.Fonction_recherche_music_Projet_FMO import recherche_music_titre
 
 import datetime
 
@@ -52,9 +53,17 @@ class Search(Screen):
     def search(self, search):
 
         # update data base
+        self.content_search = self.user_sql.interBD("SELECT * FROM music WHERE title LIKE %s", [f'%{search}%'])
+        for i in range(len(self.content_search)):
+            self.content_search[i] = {
+                "title": self.content_search[i]["title"], 
+                "artist": self.content_search[i]["auteur"],
+                "img": self.content_search[i]["picture"],
+                "id": self.content_search[i]["id_music"],
+                "url": self.content_search[i]["link"]
+            }
 
-        print(search)
-        self.content_search.append(self.user.playlists[0]['musics'][0])
+        print(self.content_search)
 
         self.display_search()
 

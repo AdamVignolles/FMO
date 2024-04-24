@@ -1,3 +1,8 @@
+#import os
+#os.add_dll_directory(os.getcwd())
+#os.add_dll_directory(r'C:\Program Files (x86)\VideoLAN\VLC')
+#os.add_dll_directory(r'D:\FMO\vlc\vlc')
+
 import vlc
 
 

@@ -1,5 +1,8 @@
 #Code by Lenny Cohen ,Project FMO
-import Class_interaction_sql_sur_BD_Projet_FMO as inter
+try:
+    import Class_interaction_sql_sur_BD_Projet_FMO as inter
+except:
+    import Programe_Python.Class_interaction_sql_sur_BD_Projet_FMO as inter
 """Fonction de recherche de music"""
 
 def recherche_music_genre(id_genre) -> list:

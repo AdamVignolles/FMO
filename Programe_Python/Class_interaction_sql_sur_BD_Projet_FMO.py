@@ -9,6 +9,7 @@ class Interaction_sql():
                         charset='utf8mb4',
                         database="admin_FMO",
                         autocommit=True,
+                        port=3306,
                         cursorclass=BD.cursors.DictCursor)
         self.PORT = 3306
     
@@ -53,12 +54,36 @@ class Interaction_sql():
         with self.conex.cursor() as cursor:
             cursor.execute(str("UPDATE "+table+" SET "+modif_commande+" WHERE "+element_compare+" "+comparatif+" "+caracteristique+" ;"))
 
-    def interBD(self, commande : str):
+    def interBD(self, commande : str, param = []):
         """Permet de fair un requète directe via "comande" sur la BD mettre dans commande la requete ex : "SELECT ..... FROM ....."""
         with self.conex.cursor() as cursor:
-            cursor.execute(commande)
+            if param != []:
+                cursor.execute(commande, param)
+            else:
+                cursor.execute(commande)
             resultats = cursor.fetchall()
             return resultats
-            
+    
+
+if __name__ == "__main__":
+    sql = Interaction_sql()
+    command = [
+        "CREATE TABLE IF NOT EXISTS users (id_users INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,pseudo VARCHAR(50),pasword VARCHAR(50), picture VARCHAR(150),nom VARCHAR(50),prenom VARCHAR(50));",
+        "CREATE TABLE IF NOT EXISTS music (id_music INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,title VARCHAR(80),auteur VARCHAR(50),picture VARCHAR(150),temp INT UNSIGNED ,played VARCHAR(50),link VARCHAR(50));",
+        "CREATE TABLE IF NOT EXISTS playlists (id_playlists INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,title VARCHAR(80),id_users INT UNSIGNED,picture VARCHAR(150));",
+        "CREATE TABLE IF NOT EXISTS playlist (id_playlists INT UNSIGNED,id_music INT UNSIGNED,date_ajout DATE );",
+        "CREATE TABLE IF NOT EXISTS genres (id_genre INT UNSIGNED,id_music INT UNSIGNED);",
+        "CREATE TABLE IF NOT EXISTS genre (id_genre INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,nom VARCHAR(50));"
+               ]
+    #for i in command:
+        #sql.interBD(i)
+    
+    #add music
+    #sql.inssertionBD("music", ["Music 1", "Auteur 1", "img/music.png", 100, "0", "download_music/music.mp3"], ["title", "auteur", "picture", "temp", "played", "link"])
+    
+    print(sql.interBD("show tables;"))
+    print(sql.interBD("SELECT * FROM music;"))
+    print(sql.interBD("SELECT * FROM music WHERE title LIKE '%Music%' ;"))
+    sql.closeBD()
         
     

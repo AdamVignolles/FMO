@@ -11,6 +11,8 @@ from kivy.uix.progressbar import ProgressBar
 from kivy.clock import Clock 
 from kivy.graphics import Color, Rectangle
 
+from Programe_Python.Class_interaction_sql_sur_BD_Projet_FMO import Interaction_sql as BD
+
 from functools import partial
 
 class Library(Screen):
@@ -22,6 +24,8 @@ class Library(Screen):
         self.sm = sm
         self.user = user
         self.music_player = music_player
+
+        self.bd = BD()
         
         self.playlits()
         self.n_playlist_afficher = 0
@@ -107,6 +111,11 @@ class Library(Screen):
             "musics": []
         })
 
+        # update data base
+        command = "INSERT INTO playlists (title, id_users, picture) VALUES (%s, %s, %s)"
+        value = [title, self.user.data["id"], self.choose_img_path if self.choose_img_path is not None else "img/playlist.png"]
+        self.bd.inssertionBD("playlists", value, column=["title", "id_users", "picture"])
+
         self.remove_widget(layout)
 
         self.playlists_area.remove_widget(self.playlists_grid)
@@ -147,6 +156,7 @@ class Library(Screen):
         self.playlist_layout.add_widget(Label(text=playlist['title'], size_hint=(1, .1), pos_hint={'center_x': 0.5, 'center_y': 0.9}))
 
         self.playlist_layout.add_widget(Button(text='Back', size_hint=(None, None), size=(50, 50), pos_hint={'center_x': 0.1, 'center_y': 0.1}, on_press=self.back))
+        self.playlist_layout.add_widget(Button(text='SUPRIMER', size_hint=(None, None), size=(50, 50), pos_hint={'center_x': 0.9, 'center_y': 0.05}, on_press=partial(self.remove_playlist, i)))
 
         musics_scroll = ScrollView(size_hint=(1, None), size=(500, 350))
         musics_grid = GridLayout(cols=1, spacing=10, padding=10, size_hint=(1, None))
@@ -170,12 +180,23 @@ class Library(Screen):
         self.playlist_layout.add_widget(musics_scroll)
 
         self.add_widget(self.playlist_layout)
+    
+    def remove_playlist(self, i, instance):
+        # update data base
+        command = "DELETE FROM playlists WHERE id_playlists = %s"
+        self.bd.interBD(command, (self.user.playlists[i]['id']))
+
+        self.user.playlists.pop(i)
+        self.remove_widget(instance.parent)
 
     def remove_music(self, i, playlist, instance):
-        playlist['musics'].pop(i)
-        self.remove_widget(self.playlist_layout)
 
         # update data base
+        command = "DELETE FROM playlist WHERE id_playlists = %s AND id_music = %s"
+        self.bd.interBD(command, (playlist['id'], playlist['musics'][i]['id']))
+
+        playlist['musics'].pop(i)
+        self.remove_widget(self.playlist_layout)
 
     def back(self, instance):
         self.remove_widget(instance.parent)

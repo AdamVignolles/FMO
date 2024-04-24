@@ -7,7 +7,7 @@ def genre_maj(id_users):
     interac = inter.Interaction_sql()
     list_id_playlist = interac.rechercheBD("id_users", str(id_users), "playlists", "id_playlists")["id_playlists"]
     list_id_musique = []
-    for id_playlist in list_idplaylist:
+    for id_playlist in list_id_playlist:
         list_id_music += interac.rechercheBD("id_playlists", str(id_playlist), "playlist", "id_music")["id_music"]
     dict_genre ={}
     temp_genre = 0
@@ -17,7 +17,7 @@ def genre_maj(id_users):
             dict_genre[str(temp_genre)] = 1
         else:
             value_temp = dict_genre[str(temp_genre)]
-            dict_genre[str(temp_genre)] = vlaue_temp + 1
+            dict_genre[str(temp_genre)] = value_temp + 1
     value_temp = (0,0)
     for cle in dict_genre.items():
         if value_temp[1] < cle[1] :
