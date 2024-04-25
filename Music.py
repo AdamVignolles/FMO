@@ -1,6 +1,13 @@
 import os
+
+# Add the path of the vlc dlls to the system path
+# This is necessary to avoid the error: "No suitable access module for 'file'"
+# The error occurs because the vlc dlls are not in the system path
+
+os.environ['PATH'] += os.pathsep + os.getcwd() + "\\vlc"
+
 cureent_path = os.getcwd()
-os.add_dll_directory(cureent_path + "\\vlc\\vlc")
+#os.add_dll_directory(cureent_path + "\\vlc")
 
 import vlc
 
