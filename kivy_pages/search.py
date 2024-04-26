@@ -63,8 +63,6 @@ class Search(Screen):
                 "url": self.content_search[i]["link"]
             }
 
-        print(self.content_search)
-
         self.display_search()
 
     def display_search(self):
@@ -162,10 +160,11 @@ class Search(Screen):
         Clock.schedule_interval(self.update_music, 1 / 60)
 
     def update_music(self, dt):
-        if self.music_player.is_playing() and self.music_player.current_music is not None:
+        if self.music_player.is_playing() and self.music_player.current_music is not None :
             self.music_bar_layout.children[3].text = f'{self.music_player.current_music["title"]} - {self.music_player.current_music["artist"]}'
         else:
-            self.music_bar_layout.children[3].text = 'No music playing'
+            if not self.music_player.paused:
+                self.music_bar_layout.children[3].text = 'No music playing'
 
 
     def show_music(self, instance):

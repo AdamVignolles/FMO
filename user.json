@@ -1,1 +1,1 @@
-{"is_connected": true, "id": 1, "curent_queue": []}
+{"is_connected": true, "is_admin": false, "is_staff": false, "is_superuser": false, "is_authenticated": false, "is_anonymous": true, "user": null, "perms": {}, "id": 1, "curent_queue": [], "pseudo": "Adam", "img": "picture", "nom": "Adam", "prenom": "Vignolles"}

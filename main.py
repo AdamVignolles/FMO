@@ -6,6 +6,7 @@ from kivy_pages.connection import Connection, Inscription
 from kivy_pages.home import Home
 from kivy_pages.library import Library
 from kivy_pages.search import Search
+from kivy_pages.user import User_Page
 
 from User import User
 
@@ -40,6 +41,7 @@ class MainApp(App):
         sm.add_widget(Home(name='Home', sm=sm, user=user, music_player=music_player))
         sm.add_widget(Library(name='Library', sm=sm, user=user, music_player=music_player))
         sm.add_widget(Search(name='Search', sm=sm, user=user, music_player=music_player))
+        sm.add_widget(User_Page(name='User', sm=sm, user=user, music_player=music_player))
 
 
         if user.is_connected:

@@ -63,6 +63,10 @@ class User:
             self.data['is_connected'] = True
             self.data['id'] = id_user
             self.data['curent_queue'] = self.music_player.queue
+            self.data['pseudo'] = user[0]['pseudo']
+            self.data['img'] = user[0]['picture']
+            self.data['nom'] = user[0]['nom']
+            self.data['prenom'] = user[0]['prenom']
             self.save_json()
 
             

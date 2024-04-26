@@ -21,7 +21,7 @@ class Home(Screen):
         self.page = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.7})
 
         self.add_widget(Label(text="Home"))
-
+        self.add_widget(Button(text='User', on_press=self.go_user, size_hint=(.1, .1), pos_hint={'center_x': .9, 'center_y': .9}))
         self.nav_bar()
 
         self.music_bar()
@@ -60,10 +60,11 @@ class Home(Screen):
         Clock.schedule_interval(self.update_music, 1 / 60)
 
     def update_music(self, dt):
-        if self.music_player.is_playing() and self.music_player.current_music is not None:
+        if self.music_player.is_playing() and self.music_player.current_music is not None :
             self.music_bar_layout.children[3].text = f'{self.music_player.current_music["title"]} - {self.music_player.current_music["artist"]}'
         else:
-            self.music_bar_layout.children[3].text = 'No music playing'
+            if not self.music_player.paused:
+                self.music_bar_layout.children[3].text = 'No music playing'
 
 
     def show_music(self, instance):
@@ -176,5 +177,9 @@ class Home(Screen):
     def go_search(self, sm):
         sm.current = 'Search'
         sm.transition.direction = 'left'
+
+    def go_user(self, instance):
+        self.sm.current = 'User'
+        self.sm.transition.direction = 'left'
 
         
