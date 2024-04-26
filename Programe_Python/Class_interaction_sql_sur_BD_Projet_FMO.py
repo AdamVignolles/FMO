@@ -84,6 +84,7 @@ if __name__ == "__main__":
     print(sql.interBD("show tables;"))
     print(sql.interBD("SELECT * FROM music;"))
     print(sql.interBD("SELECT * FROM music WHERE title LIKE '%Music%' ;"))
+    sql.interBD("DELETE FROM music WHERE title LIKE '%test%' ;")
     sql.closeBD()
         
     

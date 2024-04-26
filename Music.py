@@ -11,6 +11,8 @@ cureent_path = os.getcwd()
 
 import vlc
 
+from google_drive.Google_drive_api import google_drive_api
+
 
 class Music:
     def __init__(self):
@@ -22,10 +24,25 @@ class Music:
         self.loop = False
         self.media_player = vlc.MediaPlayer()
 
+        self.google_api = google_drive_api()
+
     def play(self):
         music = self.queue.pop(0)
 
-        media = vlc.Media(music['url'])
+        print(music['url'])
+       
+        if music['url'] in os.listdir('download_music'):
+            media =  vlc.Media('download_music/' + music['url'])
+        else:
+            id_music_file = self.google_api.search_file_by_name(music['url'])[0]['id']
+            print(id_music_file)
+            self.google_api.download_file(id_music_file, 'download_music/' + music['url'])
+            media =  vlc.Media('download_music/' + music['url'])
+
+            id_img_file = self.google_api.search_file_by_name(music['img'])[0]['id']
+            print(id_img_file)
+            self.google_api.download_file(id_img_file, 'download_img/' + music['img'])
+            music['img'] = 'download_img/' + music['img']
         self.media_player.set_media(media)
 
         self.media_player.play()

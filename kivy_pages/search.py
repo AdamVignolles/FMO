@@ -15,6 +15,9 @@ from functools import partial
 from Programe_Python.Class_interaction_sql_sur_BD_Projet_FMO import Interaction_sql
 from Programe_Python.Fonction_recherche_music_Projet_FMO import recherche_music_titre
 
+from google_drive.Google_drive_api import google_drive_api
+import os
+
 import datetime
 
 class Search(Screen):
@@ -27,6 +30,8 @@ class Search(Screen):
         self.user = user
         self.music_player = music_player
         self.user_sql = Interaction_sql()
+
+        self.google_api = google_drive_api()
 
         self.content_search = []
         
@@ -52,9 +57,17 @@ class Search(Screen):
 
     def search(self, search):
 
+        self.add_widget(Label(text='Searching...', size_hint=(1, .1), pos_hint={'center_x': .5, 'center_y': .8}))
+
         # update data base
         self.content_search = self.user_sql.interBD("SELECT * FROM music WHERE title LIKE %s", [f'%{search}%'])
         for i in range(len(self.content_search)):
+            if self.content_search[i]["picture"] in os.listdir('download_img'):
+                self.content_search[i]["picture"] = 'download_img/' + self.content_search[i]["picture"]
+            else:
+                id_img_file = self.google_api.search_file_by_name(self.content_search[i]["picture"])[0]['id']
+                self.google_api.download_file(id_img_file, 'download_img/' + self.content_search[i]["picture"])
+                self.content_search[i]["picture"] = 'download_img/' + self.content_search[i]["picture"]
             self.content_search[i] = {
                 "title": self.content_search[i]["title"], 
                 "artist": self.content_search[i]["auteur"],

@@ -13,6 +13,8 @@ from kivy.graphics import Color, Rectangle
 
 from Programe_Python.Class_interaction_sql_sur_BD_Projet_FMO import Interaction_sql as BD
 
+from google_drive.Google_drive_api import google_drive_api
+
 from functools import partial
 
 class User_Page(Screen):
@@ -21,6 +23,8 @@ class User_Page(Screen):
         self.sm = sm
         self.user = user
         self.music_player = music_player
+
+        self.google_api = google_drive_api()
 
         self.bd = BD()
 
@@ -157,14 +161,17 @@ class User_Page(Screen):
         if self.chose_music_file is None:
             return
         
-        file = self.chose_music_file.split('/')[-1]
-        img = self.chose_music_img.split('/')[-1]
+        file = self.chose_music_file.split('\\')[-1]
+        img = self.chose_music_img.split('\\')[-1]
 
         title = self.input_title_music.text
         autor = self.user.data['pseudo']
 
         duree = 0
         played = 0
+
+        self.google_api.upload_file(self.chose_music_file)
+        self.google_api.upload_file(self.chose_music_img)
 
         self.bd.interBD("INSERT INTO music (title, auteur, picture, temp, played, link) VALUES (%s, %s, %s, %s, %s, %s)", [title, autor, img, duree, played, file])
 

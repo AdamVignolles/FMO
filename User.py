@@ -51,7 +51,7 @@ class User:
                         "id": m['id_music'],
                         "date_ajout": music['date_ajout'],
                         #"url": music['url']
-                        "url": "download_music/music.mp3"
+                        "url": m['link']
                     })
             self.playlists.append({
                 "title": playlist['title'],

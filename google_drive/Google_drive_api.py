@@ -17,17 +17,30 @@ class google_drive_api():
 
     def Creds(self):
         creds = None
-        if os.path.exists("token.json"):
-            creds = Credentials.from_authorized_user_file("token.json", self.SCOPES)
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file("credentials.json", self.SCOPES)
-                creds = flow.run_local_server(port=0)
-            with open("token.json", "w") as token:
-                token.write(creds.to_json())
-        return creds
+        try : 
+            if os.path.exists("google_drive/token.json"):
+                creds = Credentials.from_authorized_user_file("google_drive/token.json", self.SCOPES)
+            if not creds or not creds.valid:
+                if creds and creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+                else:
+                    flow = InstalledAppFlow.from_client_secrets_file("google_drive/credentials.json", self.SCOPES)
+                    creds = flow.run_local_server(port=0)
+                with open("google_drive/token.json", "w") as token:
+                    token.write(creds.to_json())
+            return creds
+        except Exception as e:
+            if os.path.exists("token.json"):
+                creds = Credentials.from_authorized_user_file("token.json", self.SCOPES)
+            if not creds or not creds.valid:
+                if creds and creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+                else:
+                    flow = InstalledAppFlow.from_client_secrets_file("credentials.json", self.SCOPES)
+                    creds = flow.run_local_server(port=0)
+                with open("token.json", "w") as token:
+                    token.write(creds.to_json())
+            return creds
     
     def search_file(self):
         try:
@@ -60,7 +73,7 @@ class google_drive_api():
                 response = (
                     service.files()
                     .list(
-                        q=f"name='{file_name}' and mimeType='text/plain/mp3' and trashed=false",
+                        q=f"name='{file_name}' and trashed=false",
                         spaces="drive",
                         fields="nextPageToken, files(id, name)",
                         pageToken=page_token,
@@ -84,12 +97,14 @@ class google_drive_api():
         except HttpError as error:
             print(f"An error occurred: {error}")
 
-    def download_file(self, file_id):
+    def download_file(self, file_id, destination=None):
         try:
             service = build('drive', 'v3', credentials=self.creds)
             request = service.files().get_media(fileId=file_id)
             file = service.files().get(fileId=file_id).execute()
-            fh = open(file.get("name"), 'wb')
+            if destination is None:
+                destination = file.get("name")
+            fh = open(destination, "wb")
             downloader = MediaIoBaseDownload(fh, request)
             done = False
             while done is False:
