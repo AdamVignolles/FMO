@@ -1,16 +1,22 @@
-from kivy.app import App
-from kivy.uix.screenmanager import ScreenManager, NoTransition
-from kivy.core.window import Window
+try :
+    from kivy.app import App
+    from kivy.uix.screenmanager import ScreenManager, NoTransition
+    from kivy.core.window import Window
 
-from kivy_pages.connection import Connection, Inscription
-from kivy_pages.home import Home
-from kivy_pages.library import Library
-from kivy_pages.search import Search
-from kivy_pages.user import User_Page
+    from kivy_pages.connection import Connection, Inscription
+    from kivy_pages.home import Home
+    from kivy_pages.library import Library
+    from kivy_pages.search import Search
+    from kivy_pages.user import User_Page
 
-from User import User
+    from User import User
 
-from Music import Music
+    from Music import Music
+
+    import vlc
+
+except Exception as e:
+    import utils.setup
 
 title = 'Free Muisc Only'
 
