@@ -43,11 +43,13 @@ class User_Page(Screen):
         layout.add_widget(Button(text='Back', on_press=self.go_home, size_hint=(0.1, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.9}))
         img = self.user.data['img'] if 'img' in self.user.data.keys() else 'img/final_logo.png'
         username = self.user.data['pseudo'] if 'pseudo' in self.user.data.keys() else 'Username'
+        nom = self.user.data['nom'] if 'nom' in self.user.data.keys() else 'Nom'
+        prenom = self.user.data['prenom'] if 'prenom' in self.user.data.keys() else 'Prenom'
 
         layout.add_widget(Button(text='img', background_normal=img, on_press=self.change_img, size_hint=(0.3, 0.3), pos_hint={'center_x': 0.5, 'center_y': 0.7}))
         layout.add_widget(Label(text=f'Username: {username}', size_hint=(0.1, 0.1), pos_hint={'center_x': 0.3, 'center_y': 0.5}))
-        layout.add_widget(Label(text=f'Nom: {self.user.data["nom"]}', size_hint=(0.1, 0.1), pos_hint={'center_x': 0.3, 'center_y': 0.4}))
-        layout.add_widget(Label(text=f'Prenom: {self.user.data["prenom"]}', size_hint=(0.1, 0.1), pos_hint={'center_x': 0.3, 'center_y': 0.3}))
+        layout.add_widget(Label(text=f'Nom: {nom}', size_hint=(0.1, 0.1), pos_hint={'center_x': 0.3, 'center_y': 0.4}))
+        layout.add_widget(Label(text=f'Prenom: {prenom}', size_hint=(0.1, 0.1), pos_hint={'center_x': 0.3, 'center_y': 0.3}))
 
         layout.add_widget(Button(text='my music', on_press=self.my_music, size_hint=(0.1, 0.1), pos_hint={'center_x': 0.7, 'center_y': 0.5}))
 
