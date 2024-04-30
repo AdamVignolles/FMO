@@ -19,7 +19,7 @@ class Connection_Inscription:
         if len(id_list) == 0:
             id_inscrip = 1
         else:
-            id_inscrip = id_list[-1] + 1
+            id_inscrip = len(id_list) + 1
         self.user.inssertionBD("users", (id_inscrip, pseudo_inscrip, hasch.hachage_str(pasword+"SELPOIVRE"), "picture", nom, premon))
         return id_inscrip
 
