@@ -1,13 +1,7 @@
 import os
 
 # Add the path of the vlc dlls to the system path
-# This is necessary to avoid the error: "No suitable access module for 'file'"
-# The error occurs because the vlc dlls are not in the system path
-
 os.environ['PATH'] += os.pathsep + os.getcwd() + "\\vlc"
-
-cureent_path = os.getcwd()
-#os.add_dll_directory(cureent_path + "\\vlc")
 
 import vlc
 
@@ -28,21 +22,19 @@ class Music:
 
     def play(self):
         music = self.queue.pop(0)
-
-        print(music['url'])
        
         if music['url'] in os.listdir('download_music'):
             media =  vlc.Media('download_music/' + music['url'])
         else:
             id_music_file = self.google_api.search_file_by_name(music['url'])[0]['id']
-            print(id_music_file)
             self.google_api.download_file(id_music_file, 'download_music/' + music['url'])
+            
             media =  vlc.Media('download_music/' + music['url'])
 
             id_img_file = self.google_api.search_file_by_name(music['img'])[0]['id']
-            print(id_img_file)
             self.google_api.download_file(id_img_file, 'download_img/' + music['img'])
             music['img'] = 'download_img/' + music['img']
+
         self.media_player.set_media(media)
 
         self.media_player.play()

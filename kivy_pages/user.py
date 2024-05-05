@@ -38,9 +38,11 @@ class User_Page(Screen):
 
     def user_page(self):
         """Renvoi la page de l'utilisateur"""
+        
         layout = FloatLayout()
         layout.add_widget(Label(text='User Page', size_hint=(1, 0.1), pos_hint={'center_x': 0.5, 'center_y': 0.9}))
         layout.add_widget(Button(text='Back', on_press=self.go_home, size_hint=(0.1, 0.1), pos_hint={'center_x': 0.1, 'center_y': 0.9}))
+
         img = self.user.data['img'] if 'img' in self.user.data.keys() else 'img/final_logo.png'
         username = self.user.data['pseudo'] if 'pseudo' in self.user.data.keys() else 'Username'
         nom = self.user.data['nom'] if 'nom' in self.user.data.keys() else 'Nom'

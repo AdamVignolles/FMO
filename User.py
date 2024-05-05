@@ -37,8 +37,6 @@ class User:
         for playlist in playlists:
             info_playlist = self.user_sql.rechercheBD("id_playlists", playlist['id_playlists'], "playlist")
             # ajouter une musique
-
-
                 
             list_music = []
             for music in info_playlist:
@@ -60,19 +58,13 @@ class User:
                 "musics": list_music
             })
 
-            self.data['is_connected'] = True
-            self.data['id'] = id_user
-            self.data['curent_queue'] = self.music_player.queue
-            self.data['pseudo'] = user[0]['pseudo']
-            self.data['img'] = user[0]['picture']
-            self.data['nom'] = user[0]['nom']
-            self.data['prenom'] = user[0]['prenom']
-            self.save_json()
-
-            
-
-
-        # create a playlist
-        #self.user_sql.inssertionBD(table="playlists", new_insert=["Playlist 1", id_user, "img/playlist.png"], column=["title", "id_users", "picture"])
+        self.data['is_connected'] = True
+        self.data['id'] = id_user
+        self.data['curent_queue'] = self.music_player.queue
+        self.data['pseudo'] = user[0]['pseudo']
+        self.data['img'] = user[0]['picture']
+        self.data['nom'] = user[0]['nom']
+        self.data['prenom'] = user[0]['prenom']
+        self.save_json()
 
         
