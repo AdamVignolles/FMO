@@ -7,7 +7,7 @@ import vlc
 
 from google_drive.Google_drive_api import google_drive_api
 
-
+print("Importation de Music")
 class Music:
     def __init__(self):
         self.current_music = None

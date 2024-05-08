@@ -1,4 +1,4 @@
-try :
+'''try :
     from kivy.app import App
     from kivy.uix.screenmanager import ScreenManager, NoTransition
     from kivy.core.window import Window
@@ -17,6 +17,22 @@ try :
 
 except Exception as e:
     import utils.setup
+'''
+from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, NoTransition
+from kivy.core.window import Window
+
+from kivy_pages.connection import Connection, Inscription
+from kivy_pages.home import Home
+from kivy_pages.library import Library
+from kivy_pages.search import Search
+from kivy_pages.user import User_Page
+
+from User import User
+
+import Music
+
+import vlc
 
 title = 'Free Muisc Only'
 
@@ -32,7 +48,7 @@ class MainApp(App):
         Window.size = page_size
         Window.clearcolor = grey
 
-        music_player = Music()
+        music_player = Music.Music()
 
         user = User(music_player=music_player)
 

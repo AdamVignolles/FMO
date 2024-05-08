@@ -1,0 +1,15 @@
+1 : Rock
+2 : Pop
+3 : Blues
+4 : Electro
+5 : Funk
+6 : Phonk
+7 : Jaz
+8 : Rap
+9 : House
+10 : Metal
+11 : Classique
+12 : Soul
+13 : Opera
+14 : Country
+15 : Reggae
