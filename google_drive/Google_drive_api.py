@@ -1,3 +1,4 @@
+# Author : Adam Vignolles
 import os.path
 
 from google.auth.transport.requests import Request
@@ -10,12 +11,14 @@ from googleapiclient.http import MediaFileUpload
 
 
 class google_drive_api():
-
-    def __init__(self):
+    '''Class to manage the google drive api'''
+    def __init__(self) -> None:
+        '''Constructor of the class, it initialize the scopes and the credentials of the api'''
         self.SCOPES = ['https://www.googleapis.com/auth/gmail.readonly','https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive.metadata']
         self.creds = self.Creds()
 
-    def Creds(self):
+    def Creds(self) -> Credentials:
+        '''Function to get the credentials of the api'''
         creds = None
         try : 
             if os.path.exists("google_drive/token.json"):
@@ -42,7 +45,8 @@ class google_drive_api():
                     token.write(creds.to_json())
             return creds
     
-    def search_file(self):
+    def search_file(self) -> list:
+        '''Function to search a file in the google drive'''
         try:
             service = build("drive", "v3", credentials=self.creds)
             results = (
@@ -64,7 +68,8 @@ class google_drive_api():
         except HttpError as error:
             print(f"An error occurred: {error}")
 
-    def search_file_by_name(self, file_name):
+    def search_file_by_name(self, file_name) -> list:
+        '''Function to search a file by name in the google drive'''
         try:
             service = build("drive", "v3", credentials=self.creds)
             files = []
@@ -85,7 +90,8 @@ class google_drive_api():
         except HttpError as error:
             print(f"An error occurred: {error}")
 
-    def upload_file(self, file_path):
+    def upload_file(self, file_path: str) -> str:
+        '''Function to upload a file in the google drive'''
         try:
             service = build('drive', 'v3', credentials=self.creds)
             file_metadata = {'name': os.path.basename(file_path)}
@@ -97,7 +103,8 @@ class google_drive_api():
         except HttpError as error:
             print(f"An error occurred: {error}")
 
-    def download_file(self, file_id, destination=None):
+    def download_file(self, file_id:int, destination=None) -> bool:
+        '''Function to download a file from the google drive'''
         try:
             service = build('drive', 'v3', credentials=self.creds)
             request = service.files().get_media(fileId=file_id)

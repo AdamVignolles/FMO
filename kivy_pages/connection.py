@@ -1,3 +1,4 @@
+# Author : Adam Vignolles
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -9,6 +10,7 @@ from kivy.core.window import Window
 from Programe_Python.Class_Connexion_Inscription_Projet_FMO import Connection_Inscription
 
 class Connection(Screen):
+    '''classe permettant de gérer la page de connexion de l'application'''
     def __init__(self, sm, user, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
@@ -35,7 +37,8 @@ class Connection(Screen):
         
         self.add_widget(self.page)
 
-    def check_connection(self, instance):
+    def check_connection(self, instance) -> None:
+        '''Fonction permettant de vérifier la connexion de l'utilisateur'''
         result = self.connection_inscription.connexion(self.usename.text, self.password.text)
         if type(result) == int:
             self.connection_done = True
@@ -44,13 +47,15 @@ class Connection(Screen):
         else:
             self.error_label.text = result
 
-    def go_to_page2(self, instance):
+    def go_to_page2(self, instance) -> None:
+        '''Fonction permettant de changer de page'''
         app = App.get_running_app()
         app.root.current = 'Inscription'
         app.root.transition.direction = 'left'
 
 
 class Inscription(Screen):
+    '''classe permettant de gérer la page d'inscription de l'application'''
     def __init__(self, sm, user, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
@@ -83,7 +88,8 @@ class Inscription(Screen):
 
         self.add_widget(self.page)
 
-    def create_account(self, instance):
+    def create_account(self, instance) -> None:
+        '''Fonction permettant de créer un compte utilisateur'''
         if self.password.text != self.confirm_password.text:
             self.error_label.text = 'Passwords do not match'
 
@@ -95,7 +101,8 @@ class Inscription(Screen):
         else:
             self.error_label.text = result
 
-    def go_to_page1(self, instance):
+    def go_to_page1(self, instance) -> None:
+        '''Fonction permettant de changer de page'''
         app = App.get_running_app()
         app.root.current = 'Connection'
         app.root.transition.direction = 'right'

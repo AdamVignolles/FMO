@@ -1,3 +1,4 @@
+# Author : Adam Vignolles
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -18,6 +19,7 @@ from google_drive.Google_drive_api import google_drive_api
 from functools import partial
 
 class User_Page(Screen):
+    '''classe permettant de gérer la page de l'utilisateur de l'application'''
     def __init__(self, sm, user, music_player, **kw):
         super().__init__(**kw)
         self.sm = sm
@@ -28,15 +30,16 @@ class User_Page(Screen):
 
         self.bd = BD()
 
+        # afficher la page de l'utilisateur
         self.afficger_user_page()
     
 
-    def afficger_user_page(self):
+    def afficger_user_page(self) -> None:
         """Affiche la page de l'utilisateur"""
         self.clear_widgets()
         self.add_widget(self.user_page())
 
-    def user_page(self):
+    def user_page(self) -> FloatLayout:
         """Renvoi la page de l'utilisateur"""
         
         layout = FloatLayout()
@@ -60,10 +63,12 @@ class User_Page(Screen):
     def change_img(self, *args):
         pass
 
-    def my_music(self, *args):
+    def my_music(self, *args) -> None:
+        """Affiche la page de la musique de l'utilisateur"""
         self.add_widget(self.my_music_page())
 
-    def my_music_page(self):
+    def my_music_page(self) -> FloatLayout:
+        """Renvoi la page de la musique de l'utilisateur"""
         layout = FloatLayout()
 
         with layout.canvas.before:
@@ -79,16 +84,19 @@ class User_Page(Screen):
 
         return layout
     
-    def go_back(self, instance):
+    def go_back(self, instance) -> None:
+        """Fonction permettant de revenir en arrière"""
         self.sm.remove_widget(instance.parent)
     
-    def music_list(self, music):
+    def music_list(self, music) -> GridLayout:
+        """Renvoi la liste de la musique"""
         layout = GridLayout(cols=1, size_hint=(0.9, 0.7), pos_hint={'center_x': 0.5, 'center_y': 0.5})
         for m in music:
             layout.add_widget(self.music_widget(m))
         return layout
     
-    def music_widget(self, music):
+    def music_widget(self, music) -> BoxLayout:
+        """Renvoi le widget de la musique"""
         box = BoxLayout(orientation='horizontal', size_hint=(1, 0.1))
         box.add_widget(Label(text=music['picture'], size_hint=(0.1, 1)))
         box.add_widget(Label(text=music['title'], size_hint=(0.5, 1)))
@@ -96,11 +104,13 @@ class User_Page(Screen):
 
         return box
     
-    def delete_music(self, music, *args):
+    def delete_music(self, music, *args) -> None:
+        """Fonction permettant de supprimer une musique"""
         self.bd.interBD("DELETE FROM music WHERE id_music = %s", [music['id_music']])
         self.afficger_user_page()
 
-    def add_music(self, *args):
+    def add_music(self, *args) -> None:
+        """Affiche la page d'ajout de musique"""
         layout = FloatLayout()
 
         with layout.canvas.before:
@@ -118,10 +128,12 @@ class User_Page(Screen):
 
         self.add_widget(layout)
 
-    def back(self, *args):
+    def back(self, *args) -> None:
+        """Fonction permettant de revenir en arrière"""
         self.remove_widget(args[0].parent)
 
-    def choose_img(self, *args):
+    def choose_img(self, *args) -> None:
+        """Affiche la page de choix d'image"""
         self.chose_music_img = None
 
         layout = FloatLayout()
@@ -136,7 +148,8 @@ class User_Page(Screen):
         self.clear_widgets()
         self.add_widget(layout)
 
-    def choose_file(self, *args):
+    def choose_file(self, *args) -> None:
+        """Affiche la page de choix de fichier"""
         self.chose_music_file = None
 
         layout = FloatLayout()
@@ -151,15 +164,18 @@ class User_Page(Screen):
         self.remove_widget(self.parent)
         self.add_widget(layout)
 
-    def add_img(self, instance, file, *args):
+    def add_img(self, instance, file, *args) -> None:
+        """Ajoute l'image de la musique"""
         self.chose_music_img = file[0]
         self.add_music()
 
-    def add_file(self, instance, file, *args):
+    def add_file(self, instance, file, *args) -> None:
+        """Ajoute le fichier de la musique"""
         self.chose_music_file = file[0]
         self.add_music()
 
-    def add(self, *args):
+    def add(self, *args) -> None:
+        """Ajoute la musique"""
         if self.chose_music_img is None :
             return
         if self.chose_music_file is None:
@@ -182,7 +198,8 @@ class User_Page(Screen):
         self.afficger_user_page()
 
         
-    def go_home(self, *args):
+    def go_home(self, *args) -> None:
+        """Fonction permettant de revenir à la page d'accueil"""
         self.sm.current = 'Home'
 
 

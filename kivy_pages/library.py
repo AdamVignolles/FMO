@@ -1,3 +1,4 @@
+# Author : Adam Vignolles
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -16,6 +17,7 @@ from Programe_Python.Class_interaction_sql_sur_BD_Projet_FMO import Interaction_
 from functools import partial
 
 class Library(Screen):
+    '''classe permettant de gérer la page de la bibliothèque de l'application'''
     def __init__(self, sm, user, music_player, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
@@ -27,6 +29,7 @@ class Library(Screen):
 
         self.bd = BD()
         
+        # affichage de la page
         self.playlits()
         self.n_playlist_afficher = 0
 
@@ -36,7 +39,8 @@ class Library(Screen):
         self.update_music_bar()
         self.update_playlist()
 
-    def playlits(self):
+    def playlits(self) -> None:
+        '''Fonction permettant de gérer l'affichage des playlists'''
 
         self.playlists_area = ScrollView(size_hint=(1, None), size=(500, 450), pos_hint={'center_x': 0.65, 'center_y': 0.5})
 
@@ -56,10 +60,12 @@ class Library(Screen):
 
         self.add_widget(self.playlists_area)
 
-    def update_playlist(self):
+    def update_playlist(self) -> None:
+        '''Fonction permettant de mettre à jour la liste des playlists'''
         Clock.schedule_interval(self.update_playlist_area, 1 / 60)
 
-    def update_playlist_area(self, dt):
+    def update_playlist_area(self, dt) -> None:
+        '''Fonction permettant de mettre à jour la liste des playlists'''
         if self.n_playlist_afficher != len(self.user.playlists):
             self.playlists_area.clear_widgets()
 
@@ -77,7 +83,8 @@ class Library(Screen):
 
 
 
-    def new_playlist(self, instance):
+    def new_playlist(self, instance) -> None:
+        '''Fonction permettant de créer une nouvelle playlist'''
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6}, size=(500, 600))
 
         self.choose_img_path = None
@@ -101,7 +108,8 @@ class Library(Screen):
 
         self.add_widget(layout)
 
-    def add_playlist(self, title, layout):
+    def add_playlist(self, title:str, layout) -> None:
+        '''Fonction permettant d'ajouter une playlist'''
 
 
         self.user.playlists.append({
@@ -122,7 +130,8 @@ class Library(Screen):
 
         self.playlits()
 
-    def page_choose_img(self, instance):
+    def page_choose_img(self, instance) -> None:
+        '''Fonction permettant de choisir une image pour la playlist'''
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6}, size=(500, 600))
 
         with layout.canvas.before:
@@ -138,13 +147,15 @@ class Library(Screen):
 
         self.add_widget(layout)
 
-    def choose_img(self, instance, files, *args): 
+    def choose_img(self, instance, files, *args) -> None:
+        '''Fonction permettant de choisir une image pour la playlist''' 
         self.choose_img_path = files[0]
 
         self.remove_widget(instance.parent)
 
 
-    def afficher_playlist(self, i, instance):
+    def afficher_playlist(self, i:int, instance) -> None:
+        '''Fonction permettant d'afficher une playlist'''
         self.playlist_layout = BoxLayout(orientation='vertical', spacing=10, padding=10, pos_hint={'center_x': 0.5, 'center_y': 0.6}, size=(500, 600))
 
         playlist = self.user.playlists[i]
@@ -181,7 +192,8 @@ class Library(Screen):
 
         self.add_widget(self.playlist_layout)
     
-    def remove_playlist(self, i, instance):
+    def remove_playlist(self, i:int, instance) -> None:
+        '''Fonction permettant de supprimer une playlist'''
         # update data base
         command = "DELETE FROM playlists WHERE id_playlists = %s"
         self.bd.interBD(command, (self.user.playlists[i]['id']))
@@ -189,7 +201,8 @@ class Library(Screen):
         self.user.playlists.pop(i)
         self.remove_widget(instance.parent)
 
-    def remove_music(self, i, playlist, instance):
+    def remove_music(self, i:int, playlist:dict, instance) -> None:
+        '''Fonction permettant de supprimer une musique d'une playlist'''
 
         # update data base
         command = "DELETE FROM playlist WHERE id_playlists = %s AND id_music = %s"
@@ -198,10 +211,12 @@ class Library(Screen):
         playlist['musics'].pop(i)
         self.remove_widget(self.playlist_layout)
 
-    def back(self, instance):
+    def back(self, instance) -> None:
+        '''Fonction permettant de revenir en arrière'''
         self.remove_widget(instance.parent)
 
-    def music_bar(self):
+    def music_bar(self) -> None:
+        '''Fonction permettant de gérer la barre de musique'''
         self.music_bar_layout = FloatLayout(size=(500, 50), pos_hint={'center_x': .5, 'center_y': .1})
 
         # create a button with the bar image
@@ -228,17 +243,20 @@ class Library(Screen):
 
         self.add_widget(self.music_bar_layout)
 
-    def update_music_bar(self):
+    def update_music_bar(self) -> None:
+        '''Fonction permettant de mettre à jour la barre de musique'''
         Clock.schedule_interval(self.update_music, 1 / 60)
 
-    def update_music(self, dt):
+    def update_music(self, dt) -> None:
+        '''Fonction permettant de mettre à jour la barre de musique'''
         if self.music_player.is_playing() and self.music_player.current_music is not None :
             self.music_bar_layout.children[3].text = f'{self.music_player.current_music["title"]} - {self.music_player.current_music["artist"]}'
         else:
             if not self.music_player.paused:
                 self.music_bar_layout.children[3].text = 'No music playing'
 
-    def show_music(self, instance):
+    def show_music(self, instance) -> None:
+        '''Fonction permettant d'afficher les informations de la musique en cours de lecture'''
         layout = FloatLayout(size=(500, 650), pos_hint={'center_x': 0.5, 'center_y': 0.5})
 
         # remove all widget from the screen
@@ -279,7 +297,8 @@ class Library(Screen):
         layout.add_widget(self.volume)
         self.add_widget(layout)
     
-    def next_music(self, instance):
+    def next_music(self, instance) -> None:
+        '''Fonction permettant de passer à la musique suivante'''
         self.music_player.next()
 
         self.clear_widgets()
@@ -287,7 +306,8 @@ class Library(Screen):
         self.show_music(instance)
 
 
-    def back_playlist(self, instance):
+    def back_playlist(self, instance) -> None:
+        '''Fonction permettant de revenir à la page de la playlist'''
         self.clear_widgets()
         self.playlits()
 
@@ -295,17 +315,21 @@ class Library(Screen):
         self.nav_bar()
 
 
-    def show_volume(self, instance):
+    def show_volume(self, instance) -> None:
+        '''Fonction permettant d'afficher le volume'''
         self.popup_volume.open()
 
-    def update_progress(self, instance):
+    def update_progress(self, instance) -> None:
+        '''Fonction permettant de mettre à jour la barre de progression de la musique'''
         Clock.schedule_interval(self.update_progress_bar, 1 / 60)
         Clock.schedule_interval(self.update_volume, 1 / 60)
 
-    def update_volume(self, dt):
+    def update_volume(self, dt) -> None:
+        '''Fonction permettant de mettre à jour la barre de volume'''
         self.volume.value = self.music_player.volume
 
-    def update_progress_bar(self, dt):
+    def update_progress_bar(self, dt) -> None:
+        '''Fonction permettant de mettre à jour la barre de progression de la musique'''
         if self.music_player.is_playing() and self.music_player.current_music is not None:
             if self.music_player.music_length() == 0:
                 self.progress.value = 0
@@ -313,7 +337,8 @@ class Library(Screen):
                 self.progress.value = self.music_player.music_time() / self.music_player.music_length() * 100
 
 
-    def nav_bar(self):
+    def nav_bar(self) -> None:
+        '''Fonction permettant de gérer la barre de navigation'''
         float_layout = FloatLayout(size=(300, 300), pos_hint={'center_x': .5, 'center_y': .03})
 
         home_button = Button(text='', background_normal="img/home_nav.png", size_hint=(.3, .07), pos_hint={'center_x': .2, 'center_y': .5})
@@ -332,14 +357,17 @@ class Library(Screen):
 
         self.add_widget(float_layout)
 
-    def go_home(self, sm): 
+    def go_home(self, sm) -> None:
+        '''Fonction permettant de revenir à la page d'accueil'''
         sm.current = 'Home'
         sm.transition.direction = 'right'
 
-    def go_library(self, sm): 
+    def go_library(self, sm) -> None:
+        '''Fonction permettant de changer de page vers la page de la bibliothèque'''
         sm.current = 'Library'
         sm.transition.direction = 'right'
 
-    def go_search(self, sm): 
+    def go_search(self, sm) -> None:
+        '''Fonction permettant de changer de page vers la page de recherche'''
         sm.current = 'Search'
         sm.transition.direction = 'left'

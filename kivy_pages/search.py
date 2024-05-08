@@ -1,3 +1,4 @@
+# Author : Adam Vignolles
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -21,6 +22,7 @@ import os
 import datetime
 
 class Search(Screen):
+    '''classe permettant de gérer la page de recherche de l'application'''
     def __init__(self, sm, user, music_player, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
@@ -35,7 +37,7 @@ class Search(Screen):
 
         self.content_search = []
         
-        
+        # afficher la page de recherche
         self.music_bar()
         self.update_music_bar()
 
@@ -44,7 +46,8 @@ class Search(Screen):
         self.search_bar()
 
 
-    def search_bar(self):
+    def search_bar(self) -> None:
+        '''Fonction permettant de créer la barre de recherche'''
         search_bar = BoxLayout(orientation='horizontal', spacing=10, padding=10, size_hint=(1, .1), pos_hint={'center_x': .5, 'center_y': .9})
 
         search_input = TextInput(hint_text='Search', multiline=False, size_hint=(.8, 1))
@@ -55,7 +58,8 @@ class Search(Screen):
 
         self.add_widget(search_bar)
 
-    def search(self, search):
+    def search(self, search: str) -> None:
+        '''Fonction permettant de rechercher une musique'''
 
         self.add_widget(Label(text='Searching...', size_hint=(1, .1), pos_hint={'center_x': .5, 'center_y': .8}))
 
@@ -78,7 +82,8 @@ class Search(Screen):
 
         self.display_search()
 
-    def display_search(self):
+    def display_search(self) -> None:
+        '''Fonction permettant d'afficher les résultats de la recherche'''
         self.clear_widgets()
 
         
@@ -102,7 +107,8 @@ class Search(Screen):
 
             self.add_widget(box)
 
-    def add_playlist(self, music, instance):
+    def add_playlist(self, music, instance) -> None:
+        '''Fonction permettant d'ajouter une musique à une playlist'''
         # afficher les playlists et buton add
 
         self.clear_widgets()
@@ -119,11 +125,13 @@ class Search(Screen):
         self.add_widget(scroll_area)
 
 
-    def choose_playlist(self, playlist, music, instance):
+    def choose_playlist(self, playlist, music, instance) -> None:
+        '''Fonction permettant d'ajouter une musique à une playlist'''
         self.add_music_to_playlist(music, playlist)
         self.back(instance)
 
-    def add_music_to_playlist(self, music, playlist):
+    def add_music_to_playlist(self, music, playlist) -> None:
+        '''Fonction permettant d'ajouter une musique à une playlist'''
         for p in self.user.playlists:
             if p['id'] == playlist['id']:
                 p['musics'].append(music)
@@ -131,9 +139,9 @@ class Search(Screen):
                 self.user_sql.inssertionBD("playlist", [playlist['id'], music['id'], datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")], column=["id_playlists", "id_music", "date_ajout"])
                 break
 
-    def back(self, instance):
+    def back(self, instance) -> None:
+        '''Fonction permettant de revenir à la page précédente'''
         self.clear_widgets()
-
       
         self.music_bar()
 
@@ -142,7 +150,8 @@ class Search(Screen):
         self.display_search()
 
 
-    def music_bar(self):
+    def music_bar(self) -> None:
+        '''Fonction permettant de créer la barre de musique'''
         self.music_bar_layout = FloatLayout(size=(500, 50), pos_hint={'center_x': .5, 'center_y': .1})
 
         # create a button with the bar image
@@ -169,10 +178,12 @@ class Search(Screen):
 
         self.add_widget(self.music_bar_layout)
 
-    def update_music_bar(self):
+    def update_music_bar(self) -> None:
+        '''Fonction permettant de mettre à jour la barre de musique toutes les 1/60 secondes'''
         Clock.schedule_interval(self.update_music, 1 / 60)
 
-    def update_music(self, dt):
+    def update_music(self, dt) -> None:
+        '''Fonction permettant de mettre à jour la barre de musique'''
         if self.music_player.is_playing() and self.music_player.current_music is not None :
             self.music_bar_layout.children[3].text = f'{self.music_player.current_music["title"]} - {self.music_player.current_music["artist"]}'
         else:
@@ -180,7 +191,8 @@ class Search(Screen):
                 self.music_bar_layout.children[3].text = 'No music playing'
 
 
-    def show_music(self, instance):
+    def show_music(self, instance) -> None:
+        '''Fonction permettant d'afficher les informations de la musique en cours de lecture'''
         layout = FloatLayout(size=(500, 650), pos_hint={'center_x': 0.5, 'center_y': 0.5})
 
         # remove all widget from the screen
@@ -221,24 +233,29 @@ class Search(Screen):
         layout.add_widget(self.volume)
         self.add_widget(layout)
 
-    def next_music(self, instance):
+    def next_music(self, instance) -> None:
+        '''Fonction permettant de passer à la musique suivante'''
         self.music_player.next()
 
         self.clear_widgets()
 
         self.show_music(instance)
 
-    def show_volume(self, instance):
+    def show_volume(self, instance) -> None:
+        '''Fonction permettant d'afficher la barre de volume'''
         self.popup_volume.open()
 
-    def update_progress(self, instance):
+    def update_progress(self, instance) -> None:
+        '''Fonction permettant de mettre à jour la barre de progression de la musique'''
         Clock.schedule_interval(self.update_progress_bar, 1 / 60)
         Clock.schedule_interval(self.update_volume, 1 / 60)
 
-    def update_volume(self, dt):
+    def update_volume(self, dt) -> None:
+        '''Fonction permettant de mettre à jour la barre de volume'''
         self.volume.value = self.music_player.volume
 
-    def update_progress_bar(self, dt):
+    def update_progress_bar(self, dt) -> None:
+        '''Fonction permettant de mettre à jour la barre de progression de la musique'''
         if self.music_player.is_playing() and self.music_player.current_music is not None:
             if self.music_player.music_length() == 0:
                 self.progress.value = 0
@@ -246,7 +263,8 @@ class Search(Screen):
                 self.progress.value = self.music_player.music_time() / self.music_player.music_length() * 100
             
 
-    def nav_bar(self):
+    def nav_bar(self) -> None:
+        '''Fonction permettant de créer la barre de navigation'''
         float_layout = FloatLayout(size=(300, 300), pos_hint={'center_x': .5, 'center_y': .03})
 
         home_button = Button(text='', background_normal="img/home_nav.png", size_hint=(.3, .07), pos_hint={'center_x': .2, 'center_y': .5})
@@ -266,14 +284,17 @@ class Search(Screen):
 
         self.add_widget(float_layout)
 
-    def go_home(self, sm):
+    def go_home(self, sm) -> None:
+        '''Fonction permettant de changer de page vers la page d'accueil'''
         sm.current = 'Home'
         sm.transition.direction = 'right'
 
-    def go_library(self, sm):
+    def go_library(self, sm) -> None:
+        '''Fonction permettant de changer de page vers la page de la bibliothèque'''
         sm.current = 'Library'
         sm.transition.direction = 'right'
 
-    def go_search(self, sm):
+    def go_search(self, sm) -> None:
+        '''Fonction permettant de changer de page vers la page de recherche'''
         sm.current = 'Search'
         sm.transition.direction = 'left'
